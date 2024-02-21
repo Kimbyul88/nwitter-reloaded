@@ -8,15 +8,21 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding-bottom: 20px;
+  background-color: rgb(46, 28, 216);
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 20px;
 `;
 
 const TextArea = styled.textarea`
   border: 2px solid white;
   padding: 20px;
   border-radius: 20px;
-  font-size: 16px;
-  color: white;
-  background-color: black;
+  font-size: 20px;
+  font-weight: 700;
+  color: black;
+  background: none;
   width: 100%;
   resize: none;
   &::placeholder {
@@ -24,19 +30,22 @@ const TextArea = styled.textarea`
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
       sans-serif;
+    color: white;
+    font-weight: 800;
   }
   &:focus {
     outline: none;
-    border-color: orange;
+    background-color: rgb(237, 68, 62);
+    border-color: rgb(237, 68, 62);
   }
 `;
 
 const AttachFileButton = styled.label`
   padding: 10px 0px;
-  color: orange;
+  color: rgb(237, 68, 62);
   text-align: center;
   border-radius: 20px;
-  border: 1px solid orange;
+  border: 1px solid rgb(237, 68, 62);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -47,7 +56,7 @@ const AttachFileInput = styled.input`
 `;
 
 const SubmitBtn = styled.input`
-  background-color: orange;
+  background-color: rgb(237, 68, 62);
   color: white;
   border: none;
   padding: 10px 0px;
@@ -76,7 +85,7 @@ export default function PostTweetForm() {
     if (files && files.length === 1) {
       if (files[0].size <= 100000) setFile(files[0]);
       else {
-        prompt("최대 1MB의 파일을 업로드 해주세요");
+        confirm("최대 1MB의 파일을 업로드 해주세요");
         setFile(null);
         return;
       }
@@ -128,7 +137,7 @@ export default function PostTweetForm() {
     <Form onSubmit={onSubmit}>
       <TextArea
         required
-        rows={5}
+        rows={4}
         maxLength={180}
         onChange={onChange}
         value={tweet}

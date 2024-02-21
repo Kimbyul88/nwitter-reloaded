@@ -22,11 +22,24 @@ export interface ITweet {
 }
 
 const Wrapper = styled.div`
-  height: 70vh;
+  height: 60vh;
   display: flex;
   gap: 10px;
   flex-direction: column;
   overflow-y: scroll;
+  background-color: rgb(237, 68, 62);
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 20px;
+  &::-webkit-scrollbar {
+    /* width: 10px;
+    background-color: orange; */
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    /* background-color: white; */
+    display: none;
+  }
 `;
 
 export default function Timeline() {

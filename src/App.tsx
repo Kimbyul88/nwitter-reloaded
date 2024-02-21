@@ -49,15 +49,15 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     width: 100%;
-    height: 100vh;
-    background-color: #000000;
-    color:white;
+    /* height: 100vh; */
+    background-color: white;
+    color:black;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 `;
 
 const Wrapper = styled.div`
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   justify-content: center;
 `;

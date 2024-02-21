@@ -4,9 +4,9 @@ import { auth } from "../firebase";
 import Timeline from "../components/timeline";
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 90vh;
   display: grid;
-  gap: 50px;
+  gap: 20px;
   grid-template-rows: 1fr 5fr;
 `;
 

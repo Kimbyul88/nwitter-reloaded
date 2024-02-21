@@ -5,6 +5,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 
 const Wrapper = styled.div`
+  background-color: white;
   display: grid;
   grid-template-columns: 3fr 1fr;
   padding: 20px;
@@ -31,7 +32,7 @@ const Payload = styled.p`
 `;
 
 const DeleteButton = styled.button`
-  background-color: tomato;
+  background-color: rgb(237, 68, 62);
   color: white;
   font-weight: 600;
   border: 0;
@@ -64,7 +65,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
         {user?.uid === userId ? (
-          <DeleteButton onClick={onDelete}>Delete</DeleteButton>
+          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
         ) : null}
       </Column>
       {photo ? (
