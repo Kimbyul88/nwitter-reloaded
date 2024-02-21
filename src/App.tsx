@@ -48,7 +48,7 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
-    background-color: black;
+    background-color: #000000;
     color:white;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
@@ -63,14 +63,17 @@ const Wrapper = styled.div`
 function App() {
   const [isLoding, setLoading] = useState(true);
   const init = async () => {
+    //1) 사용자가 로그인을 했냐 안했냐를 확인한다. autoStateReady()
     await auth.authStateReady();
     setLoading(false);
   };
+  //1-2) 한번만 실행!
   useEffect(() => {
     init();
   }, []);
 
   return (
+    //1-3) 로그인 확인 중에는 로딩 페이지, 다 하면 메인 라우터로 보내진다.
     <Wrapper>
       <GlobalStyles />
       {isLoding ? <LoadingScreen /> : <RouterProvider router={router} />}

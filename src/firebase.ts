@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 //여러가지 키값들이 주어진 개체
 const firebaseConfig = {
@@ -16,3 +18,7 @@ const app = initializeApp(firebaseConfig);
 
 //이 앱에 대한 인증 서비스를 사용하기
 export const auth = getAuth(app);
+
+export const storage = getStorage(app);
+
+export const db = getFirestore(app);
