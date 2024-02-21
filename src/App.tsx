@@ -48,6 +48,8 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
   body {
+    width: 100%;
+    height: 100vh;
     background-color: #000000;
     color:white;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;

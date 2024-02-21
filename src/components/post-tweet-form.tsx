@@ -104,10 +104,7 @@ export default function PostTweetForm() {
       //트윗에 사진을 업로드했다면~?
       if (file) {
         //이 경로로 스토리지에 저장
-        const locationRef = ref(
-          storage,
-          `tweets/${user.uid}-${user.displayName}/${doc.id}`
-        );
+        const locationRef = ref(storage, `tweets/${user.uid}/${doc.id}`);
         //업로드하는 코드
         const result = await uploadBytes(locationRef, file);
         //업로드한 url을 받아서 해당 트윗(doc)에 업데이트 하자.
