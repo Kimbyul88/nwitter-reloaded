@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/protected-route";
-import EditModal from "./components/edit-modal";
 
 const router = createBrowserRouter([
   {
@@ -51,9 +50,9 @@ const GlobalStyles = createGlobalStyle`
   body {
     width: 100%;
     /* height: 100vh; */
-    background-color: white;
-    color:black;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: rgb(235, 233, 234);
+    color:rgb(4, 24, 52);
+    fill: rgb(4, 24, 52);
   }
 `;
 
@@ -62,16 +61,25 @@ const Wrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 `;
 
-const EditModalWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+interface CircleProps {
+  top: number;
+  left: number;
+  color: string;
+}
+
+const Circle = styled.div<CircleProps>`
+  z-index: -1;
   position: absolute;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
+  top: ${({ top }) => top}%;
+  left: ${({ left }) => left}%;
+  width: 310px;
+  height: 310px;
+  background: ${({ color }) => color};
+  border-radius: 50%;
+  filter: blur(150px);
 `;
 
 function App() {
@@ -89,9 +97,34 @@ function App() {
   return (
     //1-3) 로그인 확인 중에는 로딩 페이지, 다 하면 메인 라우터로 보내진다.
     <Wrapper>
-      {/* <EditModalWrapper>
-        <EditModal />
-      </EditModalWrapper> */}
+      <Circle
+        top={Math.round(Math.random() * 60) + 20}
+        left={Math.round(Math.random() * 60) + 20}
+        color={`rgba(${Math.round(Math.random() * 255)}, ${Math.round(
+          Math.random() * 255
+        )}, ${Math.round(Math.random() * 255)}, 0.7)`}
+      />
+      <Circle
+        top={Math.round(Math.random() * 60) + 20}
+        left={Math.round(Math.random() * 60) + 20}
+        color={`rgba(${Math.round(Math.random() * 255)}, ${Math.round(
+          Math.random() * 255
+        )}, ${Math.round(Math.random() * 255)}, 0.7)`}
+      />
+      <Circle
+        top={Math.round(Math.random() * 60) + 20}
+        left={Math.round(Math.random() * 60) + 20}
+        color={`rgba(${Math.round(Math.random() * 255)}, ${Math.round(
+          Math.random() * 255
+        )}, ${Math.round(Math.random() * 255)}, 0.7)`}
+      />
+      <Circle
+        top={Math.round(Math.random() * 60) + 20}
+        left={Math.round(Math.random() * 60) + 20}
+        color={`rgba(${Math.round(Math.random() * 255)}, ${Math.round(
+          Math.random() * 255
+        )}, ${Math.round(Math.random() * 255)}, 0.7)`}
+      />
       <GlobalStyles />
       {isLoding ? <LoadingScreen /> : <RouterProvider router={router} />}
     </Wrapper>

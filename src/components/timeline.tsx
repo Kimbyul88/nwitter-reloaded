@@ -1,6 +1,5 @@
 import {
   collection,
-  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -22,14 +21,14 @@ export interface ITweet {
 }
 
 const Wrapper = styled.div`
-  height: 60vh;
+  /* width: 90%; */
+  flex-grow: 1;
   display: flex;
   gap: 10px;
   flex-direction: column;
-  overflow-y: scroll;
-  background-color: rgb(237, 68, 62);
+  overflow-x: none;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 0 20px;
   border-radius: 20px;
   &::-webkit-scrollbar {
     /* width: 10px;
@@ -55,19 +54,6 @@ export default function Timeline() {
         orderBy("createdAt", "desc"),
         limit(30)
       );
-      // const snapshot = await getDocs(tweetsQuery);
-      // const tweets = snapshot.docs.map((doc) => {
-      //   const { tweet, createdAt, userId, username, photo } = doc.data();
-      //   return {
-      //     tweet,
-      //     createdAt,
-      //     userId,
-      //     username,
-      //     photo,
-      //     id: doc.id,
-      //   };
-      // });
-
       //실시간으로 쿼리를 가져온다.
       unsubscribe = await onSnapshot(tweetsQuery, (snapshot) => {
         snapshot.docChanges().forEach((change) => {

@@ -7,7 +7,7 @@ const Wrapper = styled.div`
   gap: 20px;
   grid-template-columns: 1fr 4fr;
   height: 100%;
-  padding: 50px 0px;
+  padding: 20px 0px;
   width: 100%;
   max-width: 860px;
 `;
@@ -17,6 +17,7 @@ const Menu = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  padding-top: 10px;
 `;
 
 const MenuItem = styled.div`
@@ -24,19 +25,23 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid blue;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
   height: 50px;
   width: 50px;
   border-radius: 50%;
   svg {
     width: 30px;
-    fill: blue;
+    fill: rgb(4, 24, 52);
   }
   &.log-out {
     border-color: tomato;
     svg {
       fill: tomato;
     }
+  }
+  &:hover {
+    background-color: white;
   }
 `;
 

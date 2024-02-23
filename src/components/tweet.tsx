@@ -7,116 +7,170 @@ import { ChangeEvent, useState } from "react";
 
 const Wrapper = styled.div`
   position: relative;
-  background-color: white;
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+  background: rgba(255, 255, 255, 0.35); /* 투명한 흰색 배경 */
+  backdrop-filter: blur(10px);
+  display: flex;
+  gap: 10px;
   padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 15px;
+  border-radius: 10px;
+  position: relative;
+  &:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
 `;
 
-const Column = styled.div``;
+const SVGWrappper = styled.div`
+  z-index: -1;
+  position: absolute;
+  top: 18px;
+  right: 3.1%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: ${({ color }) => color};
+`;
+
+const Column = styled.div`
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  /* flex-grow: 0; */
+`;
 
 const Photo = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 350px;
   border-radius: 15px;
 `;
 
 const Username = styled.span`
   font-weight: 600;
   font-size: 15px;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  img {
+    width: 17px;
+    height: 17px;
+  }
+`;
+
+const Name = styled.span``;
+const ID = styled.span`
+  color: rgb(127, 136, 151);
+  font-weight: 300;
 `;
 
 const Payload = styled.p`
+  line-height: 19px;
   margin: 10px 0px;
-  font-size: 18px;
+  padding-left: 0px;
+  font-size: 15px;
+  font-weight: 300;
+  flex-grow: 0;
 `;
 
 const DeleteButton = styled.button`
-  background-color: rgb(237, 68, 62);
+  background: none;
   color: white;
   font-weight: 600;
-  border: 0;
-  font-size: 12px;
+  border: none;
+  font-size: 14px;
   padding: 5px 10px;
   text-transform: uppercase;
-  border-radius: 10px;
   cursor: pointer;
   &:hover {
-    opacity: 0.7;
+    color: rgb(4, 24, 52);
+    background: white;
   }
 `;
 
 const EditButton = styled.button`
-  background-color: black;
+  background: none;
   color: white;
   font-weight: 600;
   border: 0;
-  font-size: 12px;
+  font-size: 14px;
   padding: 5px 10px;
   text-transform: uppercase;
-  border-radius: 10px;
   cursor: pointer;
   &:hover {
-    opacity: 0.7;
+    color: rgb(4, 24, 52);
+    background: white;
   }
 `;
 
 const Buttons = styled.div`
+  overflow: hidden;
+  position: absolute;
+  right: 30px;
+  top: 19px;
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 10px;
+  background: green;
+  height: 40px;
+  transform: translate(-30px, 0);
+  z-index: 1;
 `;
 
 const EditBox = styled.div`
+  font-family: "Noto Sans KR", sans-serif;
   position: absolute;
+  top: 0;
   right: 0;
-  background-color: green;
+  background-color: rgb(233, 235, 242);
   width: 100%;
   height: 100%;
   border-radius: 15px;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  padding: 20px;
 `;
 
-const Title = styled.span`
-  margin-top: 50px;
-  font-weight: 800;
-  font-size: 20px;
-  margin-bottom: 10px;
-`;
-
-const Input = styled.input`
+const Input = styled.textarea`
+  font-family: "Noto Sans KR", sans-serif;
+  margin-top: 10px;
+  resize: none;
   box-sizing: border-box;
   padding: 20px;
-  width: 90%;
-  height: 40%;
+  width: 100%;
+  height: 80%;
   margin-bottom: 10px;
   border: 1px solid black;
   border-radius: 10px;
   background: none;
+  font-size: 16px;
   &::placeholder {
     font-size: 16px;
     color: grey;
     font-weight: 200;
   }
   &:focus {
+    font-family: "Noto Sans KR", sans-serif;
     outline: none;
-    border: 2px solid rgb(249, 70, 68);
   }
 `;
 
 const EditButtons = styled.div`
-  width: 70%;
+  width: 100%;
   display: flex;
   gap: 5px;
   justify-content: end;
+  align-items: center;
 `;
 
 const OkButton = styled.button`
-  background-color: rgb(249, 70, 68);
+  height: 50px;
+  background-color: rgb(0, 0, 0);
   border: none;
   color: rgb(232, 236, 242);
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 30px;
   box-shadow: 1px 2px 0px black;
   /* border-bottom: 2px solid black; */
   &:hover {
@@ -131,11 +185,12 @@ const OkButton = styled.button`
 `;
 
 const CancelButton = styled.button`
-  background-color: rgb(133, 133, 133);
+  height: 50px;
+  background-color: rgb(164, 164, 164);
   border: none;
   color: rgb(232, 236, 242);
   padding: 10px 20px;
-  border-radius: 20px;
+  border-radius: 30px;
   box-shadow: 1px 2px 0px black;
 
   &:hover {
@@ -149,25 +204,43 @@ const CancelButton = styled.button`
   }
 `;
 
-const ImgBox = styled.div`
-  background-color: rgb(232, 236, 242);
+const ProfileImage = styled.div`
+  width: 45px;
+  height: 45px;
+  margin-top: 10px;
+  background-color: rgb(4, 24, 52);
   border-radius: 50%;
-  width: 150px;
-  height: 150px;
+  flex-shrink: 0;
+`;
+
+const HeaderBox = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: -100px;
-  left: 50%;
-  transform: translate(-50%);
+  box-sizing: border-box;
+  padding: 5px 0 0 0px;
+  width: 100%;
+  height: 30px;
+  justify-content: space-between;
+  align-items: end;
+  background: none;
+  svg {
+    cursor: pointer;
+    opacity: 1;
+    width: 28px;
+    stroke: rgb(4, 24, 52);
+    &:hover,
+    &:active {
+      stroke: #ffffff;
+    }
+  }
 `;
 
 export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
+  const [isMore, setmore] = useState(false);
   const user = auth.currentUser;
   const [text, setText] = useState(tweet);
   const [isEditing, setIsEditing] = useState(false);
-  const onInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const [isMouseEnter, setMouseEnter] = useState(false);
+  const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
   const onDelete = async () => {
@@ -184,8 +257,9 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
     } finally {
     }
   };
-  const onEdit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onEdit = async () => {
     setIsEditing(true);
+    setmore(false);
   };
   const onOkButton = async () => {
     if (user?.uid !== userId) return;
@@ -201,44 +275,70 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const onCancleButton = () => {
     setIsEditing(false);
   };
+  const onSVG = () => {
+    setmore((current) => !current);
+  };
+  const onMouse = () => {
+    setMouseEnter((current) => !current);
+  };
   return (
     <Wrapper>
       {user?.uid === userId && isEditing ? (
         <EditBox className="editbox" id={tweet}>
-          {/* <ImgBox>
-          <img
-            width="94"
-            height="94"
-            src="https://img.icons8.com/3d-fluency/94/star-struck-2.png"
-            alt="star-struck-2"
-            style={{
-              width: "130px",
-              height: "130px",
-            }}
-          />
-        </ImgBox> */}
-          <Title>수정하기</Title>
-          <Input type="text" defaultValue={text} onChange={onInput}></Input>
+          <Input defaultValue={text} onChange={onInput}></Input>
           <EditButtons>
             <OkButton onClick={onOkButton}>확인</OkButton>
             <CancelButton onClick={onCancleButton}>취소</CancelButton>
           </EditButtons>
         </EditBox>
       ) : null}
+      <ProfileImage></ProfileImage>
       <Column>
-        <Username>{username}</Username>
+        <HeaderBox>
+          <Username>
+            <Name>{username}</Name>
+            <img
+              width="30"
+              height="30"
+              src="https://img.icons8.com/ios-glyphs/30/228BE6/verified-account--v1.png"
+              alt="verified-account--v1"
+            />
+            <ID>@{userId.slice(0, 8)}</ID>
+          </Username>
+          {user?.uid === userId ? (
+            <svg
+              onMouseEnter={onMouse}
+              onMouseLeave={onMouse}
+              onClick={onSVG}
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
+              />
+            </svg>
+          ) : null}
+        </HeaderBox>
+
         <Payload>{tweet}</Payload>
-        {user?.uid === userId ? (
-          <Buttons>
-            <DeleteButton onClick={onDelete}>삭제</DeleteButton>
-            <EditButton onClick={onEdit}>수정</EditButton>
-          </Buttons>
-        ) : null}
+        {photo ? <Photo src={photo} /> : null}
       </Column>
-      {photo ? (
-        <Column>
-          <Photo src={photo} />
-        </Column>
+      {isMouseEnter ? (
+        <SVGWrappper className="svgwrapper" color="green" />
+      ) : (
+        <SVGWrappper className="svgwrapper" color="none" />
+      )}
+
+      {user?.uid === userId && isMore ? (
+        <Buttons>
+          <EditButton onClick={onEdit}>수정</EditButton>
+          <DeleteButton onClick={onDelete}>삭제</DeleteButton>
+        </Buttons>
       ) : null}
     </Wrapper>
   );

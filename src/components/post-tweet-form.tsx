@@ -5,50 +5,57 @@ import { auth, db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Form = styled.form`
-  display: flex;
+  display: grid;
+  grid-template-columns: 4fr 0.5fr;
+  grid-template-rows: 1fr 1fr 0.2fr;
   flex-direction: column;
   gap: 10px;
   padding-bottom: 20px;
-  background-color: rgb(46, 28, 216);
   box-sizing: border-box;
-  padding: 10px;
+  padding: 20px;
   border-radius: 20px;
 `;
 
 const TextArea = styled.textarea`
-  border: 2px solid white;
-  padding: 20px;
-  border-radius: 20px;
-  font-size: 20px;
+  grid-row: 1/-1;
+  font-size: 18px;
   font-weight: 700;
-  color: black;
+  color: rgb(4, 24, 52);
   background: none;
   width: 100%;
   resize: none;
+  border: none;
   &::placeholder {
+    font-family: "Noto Sans KR", sans-serif;
     font-size: 16px;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-      sans-serif;
-    color: white;
-    font-weight: 800;
+    color: black;
+    font-weight: 300;
   }
   &:focus {
+    font-family: "Noto Sans KR", sans-serif;
     outline: none;
-    background-color: rgb(237, 68, 62);
-    border-color: rgb(237, 68, 62);
+    /* background-color: white; */
   }
 `;
 
 const AttachFileButton = styled.label`
-  padding: 10px 0px;
-  color: rgb(237, 68, 62);
+  color: black;
   text-align: center;
-  border-radius: 20px;
-  border: 1px solid rgb(237, 68, 62);
-  font-size: 14px;
+  border-radius: 50%;
+  font-size: 30px;
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
+  &:hover,
+  &:active {
+    background: white;
+  }
 `;
 
 const AttachFileInput = styled.input`
@@ -56,16 +63,22 @@ const AttachFileInput = styled.input`
 `;
 
 const SubmitBtn = styled.input`
-  background-color: rgb(237, 68, 62);
-  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  background: none;
+  color: black;
   border: none;
-  padding: 10px 0px;
-  border-radius: 20px;
-  font-size: 16px;
+  border-radius: 50%;
+  font-size: 30px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(10px);
   cursor: pointer;
   &:hover,
   &:active {
-    opacity: 0.9;
+    background: white;
   }
 `;
 
@@ -98,7 +111,12 @@ export default function PostTweetForm() {
     //user는 현재 로그인 된 유저이다.
     const user = auth.currentUser;
     //로그인상태가 아니거나, 업로드 중이거나, 글을 안썻거나등등 하면 클릭해도 반응없다.
-    if (!user || isLoading || tweet === "" || tweet.length > 180) {
+    if (
+      !user ||
+      isLoading ||
+      (tweet === "" && file === null) ||
+      tweet.length > 180
+    ) {
       return;
     }
     //정상적일때, 트윗을 파이어베이스에 올린다.
@@ -136,26 +154,20 @@ export default function PostTweetForm() {
   return (
     <Form onSubmit={onSubmit}>
       <TextArea
-        required
-        rows={4}
+        rows={5}
         maxLength={180}
         onChange={onChange}
         value={tweet}
         placeholder="무슨 일이 일어나고 있나요?"
       />
-      <AttachFileButton htmlFor="file">
-        {file ? "Photo Added🔥" : "Add photo"}
-      </AttachFileButton>
+      <AttachFileButton htmlFor="file">{file ? "🔥" : "🖼️"}</AttachFileButton>
       <AttachFileInput
         onChange={onFileChange}
         type="file"
         id="file"
         accept="image/*"
       />
-      <SubmitBtn
-        type="submit"
-        value={isLoading ? "Posting..." : "Post Tweet"}
-      />
+      <SubmitBtn type="submit" value={isLoading ? "..." : "✍️"} />
     </Form>
   );
 }
