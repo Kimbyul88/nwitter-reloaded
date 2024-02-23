@@ -3,7 +3,6 @@ import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import { update } from "firebase/database";
 import { ChangeEvent, useState } from "react";
 
 const Wrapper = styled.div`
@@ -70,11 +69,10 @@ const Buttons = styled.div`
 `;
 
 const EditBox = styled.div`
-  /* display: none; */
   position: absolute;
   right: 0;
   background-color: green;
-  width: 50%;
+  width: 100%;
   height: 100%;
   border-radius: 15px;
 `;
@@ -168,6 +166,7 @@ const ImgBox = styled.div`
 export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const user = auth.currentUser;
   const [text, setText] = useState(tweet);
+  const [isEditing, setIsEditing] = useState(false);
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
@@ -185,26 +184,28 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
     } finally {
     }
   };
-  const onEdit = async () => {
-    const editbox = document.querySelector<HTMLElement>(".editbox");
-    if (editbox != null) {
-      editbox.style.backgroundColor = "red";
-    }
-    const changedTweet = prompt("수정할 사항을 입력해주세요");
+  const onEdit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsEditing(true);
+  };
+  const onOkButton = async () => {
     if (user?.uid !== userId) return;
     try {
       await updateDoc(doc(db, "tweets", id), {
-        tweet: changedTweet,
+        tweet: text,
       });
     } catch (e) {
       console.log(e);
     } finally {
     }
   };
+  const onCancleButton = () => {
+    setIsEditing(false);
+  };
   return (
     <Wrapper>
-      <EditBox className="editbox">
-        {/* <ImgBox>
+      {user?.uid === userId && isEditing ? (
+        <EditBox className="editbox" id={tweet}>
+          {/* <ImgBox>
           <img
             width="94"
             height="94"
@@ -216,13 +217,14 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
             }}
           />
         </ImgBox> */}
-        <Title>수정하기</Title>
-        <Input type="text" defaultValue={text} onChange={onInput}></Input>
-        <EditButtons>
-          <OkButton>확인</OkButton>
-          <CancelButton>취소</CancelButton>
-        </EditButtons>
-      </EditBox>
+          <Title>수정하기</Title>
+          <Input type="text" defaultValue={text} onChange={onInput}></Input>
+          <EditButtons>
+            <OkButton onClick={onOkButton}>확인</OkButton>
+            <CancelButton onClick={onCancleButton}>취소</CancelButton>
+          </EditButtons>
+        </EditBox>
+      ) : null}
       <Column>
         <Username>{username}</Username>
         <Payload>{tweet}</Payload>
