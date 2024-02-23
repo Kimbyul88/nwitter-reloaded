@@ -56,6 +56,7 @@ const AttachFileButton = styled.label`
   &:active {
     background: white;
   }
+  transition: display 3s ease-in-out;
 `;
 
 const AttachFileInput = styled.input`
@@ -106,6 +107,7 @@ export default function PostTweetForm() {
   };
 
   //트윗하기
+  let url = "";
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //user는 현재 로그인 된 유저이다.
@@ -135,7 +137,7 @@ export default function PostTweetForm() {
         //업로드하는 코드
         const result = await uploadBytes(locationRef, file);
         //업로드한 url을 받아서 해당 트윗(doc)에 업데이트 하자.
-        const url = await getDownloadURL(result.ref);
+        url = await getDownloadURL(result.ref);
         await updateDoc(doc, {
           photo: url,
         });
@@ -159,8 +161,8 @@ export default function PostTweetForm() {
         onChange={onChange}
         value={tweet}
         placeholder="무슨 일이 일어나고 있나요?"
-      />
-      <AttachFileButton htmlFor="file">{file ? "🔥" : "🖼️"}</AttachFileButton>
+      ></TextArea>
+      <AttachFileButton htmlFor="file">{file ? "✅" : "🖼️"}</AttachFileButton>
       <AttachFileInput
         onChange={onFileChange}
         type="file"

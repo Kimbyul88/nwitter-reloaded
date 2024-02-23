@@ -2,7 +2,12 @@ import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  getMetadata,
+  ref,
+} from "firebase/storage";
 import { ChangeEvent, useState } from "react";
 
 const Wrapper = styled.div`
@@ -44,6 +49,7 @@ const Column = styled.div`
 const Photo = styled.img`
   width: 350px;
   border-radius: 15px;
+  margin-bottom: 20px;
 `;
 
 const Username = styled.span`
@@ -204,11 +210,11 @@ const CancelButton = styled.button`
   }
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   width: 45px;
   height: 45px;
   margin-top: 10px;
-  background-color: rgb(4, 24, 52);
+  background: none;
   border-radius: 50%;
   flex-shrink: 0;
 `;
@@ -240,6 +246,20 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const [text, setText] = useState(tweet);
   const [isEditing, setIsEditing] = useState(false);
   const [isMouseEnter, setMouseEnter] = useState(false);
+  const [avatar, setAvatar] = useState(
+    "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png"
+  );
+  const getProfilePictureURL = async () => {
+    try {
+      const avatarRef = ref(storage, `avatars/${userId}`);
+      console.dir(avatarRef);
+      const downloadURL = await getDownloadURL(avatarRef);
+      setAvatar(downloadURL);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  getProfilePictureURL();
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -281,6 +301,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const onMouse = () => {
     setMouseEnter((current) => !current);
   };
+
   return (
     <Wrapper>
       {user?.uid === userId && isEditing ? (
@@ -292,7 +313,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
           </EditButtons>
         </EditBox>
       ) : null}
-      <ProfileImage></ProfileImage>
+      <ProfileImage src={avatar} />
       <Column>
         <HeaderBox>
           <Username>

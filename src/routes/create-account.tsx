@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
-import { auth } from "../firebase";
+import { auth, storage } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import {
@@ -51,9 +51,12 @@ export default function CreateAccount() {
         email,
         password
       );
+
       console.log(credentials.user);
       await updateProfile(credentials.user, {
         displayName: name,
+        photoURL:
+          "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png",
       });
       navigate("/");
     } catch (e) {

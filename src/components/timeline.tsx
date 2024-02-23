@@ -30,21 +30,11 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   padding: 0 20px;
   border-radius: 20px;
-  &::-webkit-scrollbar {
-    /* width: 10px;
-    background-color: orange; */
-    display: none;
-  }
-  &::-webkit-scrollbar-thumb {
-    /* background-color: white; */
-    display: none;
-  }
 `;
 
 export default function Timeline() {
   //tweets는 ITweet 타입이다.
   const [tweets, setTweet] = useState<ITweet[]>([]);
-
   useEffect(() => {
     let unsubscribe: Unsubscribe | null = null;
     const fetchTweets = async () => {

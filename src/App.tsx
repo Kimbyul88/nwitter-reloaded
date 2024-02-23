@@ -62,6 +62,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
+  width: 100%;
 `;
 
 interface CircleProps {

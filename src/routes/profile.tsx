@@ -26,7 +26,7 @@ const AvatarUpload = styled.label`
   overflow: hidden;
   height: 80px;
   border-radius: 50%;
-  background-color: orange;
+  background: rgba(0, 0, 0, 1);
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -49,10 +49,21 @@ const Name = styled.span`
 `;
 
 const Tweets = styled.div`
+  height: 80vh;
+  overflow-y: scroll;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  &::-webkit-scrollbar {
+    /* width: 10px;
+    background-color: orange; */
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    /* background-color: white; */
+    display: none;
+  }
 `;
 
 export default function Profile() {
