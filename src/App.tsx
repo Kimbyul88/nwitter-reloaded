@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/protected-route";
+import EditModal from "./components/edit-modal";
 
 const router = createBrowserRouter([
   {
@@ -57,9 +58,20 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 const Wrapper = styled.div`
-  /* height: 100vh; */
+  font-family: "Noto Sans KR", sans-serif;
+  position: relative;
   display: flex;
   justify-content: center;
+`;
+
+const EditModalWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
 `;
 
 function App() {
@@ -77,6 +89,9 @@ function App() {
   return (
     //1-3) 로그인 확인 중에는 로딩 페이지, 다 하면 메인 라우터로 보내진다.
     <Wrapper>
+      {/* <EditModalWrapper>
+        <EditModal />
+      </EditModalWrapper> */}
       <GlobalStyles />
       {isLoding ? <LoadingScreen /> : <RouterProvider router={router} />}
     </Wrapper>
