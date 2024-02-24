@@ -2,17 +2,14 @@ import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  getMetadata,
-  ref,
-} from "firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { ChangeEvent, useState } from "react";
+import { IoHeartSharp } from "react-icons/io5";
+import TweetFooter from "./tweet-footer";
 
 const Wrapper = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.35); /* 투명한 흰색 배경 */
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(10px);
   display: flex;
   gap: 10px;
@@ -20,7 +17,7 @@ const Wrapper = styled.div`
   border-radius: 10px;
   position: relative;
   &:hover {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.4);
   }
 `;
 
@@ -118,7 +115,7 @@ const Buttons = styled.div`
   justify-content: center;
   gap: 5px;
   border-radius: 10px;
-  background: green;
+  background: rgb(34, 139, 230);
   height: 40px;
   transform: translate(-30px, 0);
   z-index: 1;
@@ -318,12 +315,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
         <HeaderBox>
           <Username>
             <Name>{username}</Name>
-            <img
-              width="30"
-              height="30"
-              src="https://img.icons8.com/ios-glyphs/30/228BE6/verified-account--v1.png"
-              alt="verified-account--v1"
-            />
+            <img src="/check.svg" alt="" />
             <ID>@{userId.slice(0, 8)}</ID>
           </Username>
           {user?.uid === userId ? (
@@ -348,9 +340,10 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
 
         <Payload>{tweet}</Payload>
         {photo ? <Photo src={photo} /> : null}
+        <TweetFooter />
       </Column>
       {isMouseEnter ? (
-        <SVGWrappper className="svgwrapper" color="green" />
+        <SVGWrappper className="svgwrapper" color="rgb(20, 72, 117)" />
       ) : (
         <SVGWrappper className="svgwrapper" color="none" />
       )}
