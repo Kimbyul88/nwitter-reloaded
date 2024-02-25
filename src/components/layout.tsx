@@ -91,8 +91,8 @@ const ProfileBox = styled.div`
 const AuthProfile = styled.img`
   width: 55px;
   height: 55px;
-  /* background: white; */
-  border: 2px solid rgb(34, 139, 230);
+  background: black;
+  /* border: 2px solid rgb(34, 139, 230); */
   border-radius: 50%;
   flex-shrink: 0;
 `;

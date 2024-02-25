@@ -18,6 +18,7 @@ export interface ITweet {
   userId: string;
   username: string;
   createdAt: number;
+  heartCount: number;
 }
 
 const Wrapper = styled.div`
@@ -51,7 +52,8 @@ export default function Timeline() {
           return;
         });
         const tweets = snapshot.docs.map((doc) => {
-          const { tweet, createdAt, userId, username, photo } = doc.data();
+          const { tweet, createdAt, userId, username, photo, heartCount } =
+            doc.data();
           return {
             tweet,
             createdAt,
@@ -59,6 +61,7 @@ export default function Timeline() {
             username,
             photo,
             id: doc.id,
+            heartCount,
           };
         });
         setTweet(tweets);

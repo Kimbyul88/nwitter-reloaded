@@ -129,6 +129,7 @@ export default function PostTweetForm() {
         createdAt: Date.now(),
         username: user.displayName || "Anonymous",
         userId: user.uid,
+        heartCount: 0,
       });
       //트윗에 사진을 업로드했다면~?
       if (file) {

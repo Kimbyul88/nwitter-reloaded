@@ -6,6 +6,7 @@ import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { ChangeEvent, useState } from "react";
 import { IoHeartSharp } from "react-icons/io5";
 import TweetFooter from "./tweet-footer";
+import CreatedAt from "./created-at";
 
 const Wrapper = styled.div`
   position: relative;
@@ -237,7 +238,15 @@ const HeaderBox = styled.div`
   }
 `;
 
-export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
+export default function Tweet({
+  username,
+  photo,
+  tweet,
+  userId,
+  id,
+  createdAt,
+  heartCount,
+}: ITweet) {
   const [isMore, setmore] = useState(false);
   const user = auth.currentUser;
   const [text, setText] = useState(tweet);
@@ -249,7 +258,6 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const getProfilePictureURL = async () => {
     try {
       const avatarRef = ref(storage, `avatars/${userId}`);
-      console.dir(avatarRef);
       const downloadURL = await getDownloadURL(avatarRef);
       setAvatar(downloadURL);
     } catch (error) {
@@ -298,7 +306,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
   const onMouse = () => {
     setMouseEnter((current) => !current);
   };
-
+  const timeValue: number = createdAt;
   return (
     <Wrapper>
       {user?.uid === userId && isEditing ? (
@@ -317,6 +325,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
             <Name>{username}</Name>
             <img src="/check.svg" alt="" />
             <ID>@{userId.slice(0, 8)}</ID>
+            <CreatedAt time={timeValue} />
           </Username>
           {user?.uid === userId ? (
             <svg
@@ -340,7 +349,7 @@ export default function Tweet({ username, photo, tweet, userId, id }: ITweet) {
 
         <Payload>{tweet}</Payload>
         {photo ? <Photo src={photo} /> : null}
-        <TweetFooter />
+        <TweetFooter id={id} heartCount={heartCount} />
       </Column>
       {isMouseEnter ? (
         <SVGWrappper className="svgwrapper" color="rgb(20, 72, 117)" />

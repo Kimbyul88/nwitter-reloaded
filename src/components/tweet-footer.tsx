@@ -1,20 +1,37 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { auth, db } from "../firebase";
+import { doc, updateDoc } from "firebase/firestore";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  gap: 20px;
+`;
 
 const IconBox = styled.div`
   display: flex;
   align-items: center;
   gap: 3px;
+  cursor: pointer;
 `;
-
+const IconCheckBox = styled.input`
+  display: none;
+  /* &:checked + #check-label svg {
+    animation: 0.9s heartFill ease;
+    animation-fill-mode: forwards;
+  }
+  &:not(:checked) + #check-label svg {
+    fill: none;
+    stroke: rgba(0, 0, 0, 0.7);
+  } */
+`;
 const Icon = styled.div`
-  width: 20px;
+  width: 18px;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   &:before {
     z-index: -1;
     content: "";
@@ -23,16 +40,27 @@ const Icon = styled.div`
     height: 35px;
     border-radius: 50%;
   }
+  &:hover + span {
+    color: ${({ color }) => color};
+  }
   svg {
     stroke: rgba(0, 0, 0, 0.7);
+    &.fill {
+      fill: ${({ color }) => color};
+      stroke: ${({ color }) => color};
+    }
   }
-  &.Fill {
-    fill: ${({ color }) => color};
-  }
-  /* svg:hover {
-    cursor: pointer;
+  svg:hover {
     stroke: ${({ color }) => color};
   }
+  svg:hover g {
+    stroke: ${({ color }) => color};
+  }
+
+  svg:hover g path {
+    stroke: ${({ color }) => color};
+  }
+
   @keyframes heartFill {
     10% {
       transform: scale(0.8);
@@ -47,41 +75,100 @@ const Icon = styled.div`
       fill: ${({ color }) => color};
     }
   }
-  svg:active {
-    animation: 0.5s heartFill ease;
-    animation-fill-mode: forwards;
-  }
   &:hover:before {
-    cursor: pointer;
     background: ${({ color }) => color};
     opacity: 0.2;
-  } */
+  }
 `;
 
-const Number = styled.span``;
+const Number = styled.span`
+  font-weight: 300;
+  font-size: 14px;
+`;
 
-export default function TweetFooter() {
-  const [heart, setHeart] = useState(0);
-  const [isHover, setHover] = useState(false);
+export default function TweetFooter({
+  id,
+  heartCount,
+}: {
+  id: string;
+  heartCount: number;
+}) {
+  let HEART = heartCount;
   const [isClicked, setClicked] = useState(false);
+  const user = auth.currentUser;
 
-  const onHeart = (e: React.MouseEvent<HTMLDivElement>) => {
-    setClicked(true);
-    setHeart((c) => c + 1);
-    console.log(isClicked);
+  const onHeart = async (e: React.MouseEvent<HTMLDivElement>) => {
+    setClicked((c) => !c);
+    if (isClicked) {
+      HEART = HEART - 1;
+    } else {
+      HEART = HEART + 1;
+    }
+    try {
+      await updateDoc(doc(db, `tweets/${id}`), {
+        heartCount: HEART,
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+    }
   };
   return (
     <Wrapper>
+      <IconBox>
+        <Icon id={isClicked ? "check-label" : ""} color=" rgb(53, 158, 255)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.4}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z"
+            />
+          </svg>
+        </Icon>
+        <Number>0</Number>
+      </IconBox>
+      <IconBox>
+        <Icon id={isClicked ? "check-label" : ""} color=" rgb(18, 210, 0)">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 21 21"
+          >
+            <g
+              fill="none"
+              fill-rule="evenodd"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              strokeWidth="1"
+            >
+              <path d="m13.5 13.5l3 3l3-3" />
+              <path d="M9.5 4.5h3a4 4 0 0 1 4 4v8m-9-9l-3-3l-3 3" />
+              <path d="M11.5 16.5h-3a4 4 0 0 1-4-4v-8" />
+            </g>
+          </svg>
+        </Icon>
+        <Number>0</Number>
+      </IconBox>
       <IconBox onClick={onHeart}>
-        <Icon color=" rgba(231, 0, 104, 1)">
-          {/* {isClicked ? (
+        <IconCheckBox id="checked" type="checkbox" />
+        <Icon id={isClicked ? "check-label" : ""} color=" rgb(238, 72, 120)">
+          {isClicked ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              strokeWidth={1.5}
+              strokeWidth={1.4}
               stroke="currentColor"
-              className="Fill"
+              className="fill"
             >
               <path
                 strokeLinecap="round"
@@ -89,24 +176,24 @@ export default function TweetFooter() {
                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
               />
             </svg>
-          ) : ( */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="noFill"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-            />
-          </svg>
-          {/* )} */}
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.4}
+              stroke="currentColor"
+              className="nofill"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+              />
+            </svg>
+          )}
         </Icon>
-        <Number>{heart}</Number>
+        <Number>{HEART}</Number>
       </IconBox>
     </Wrapper>
   );
