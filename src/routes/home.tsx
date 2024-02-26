@@ -8,6 +8,11 @@ const Wrapper = styled.div`
   display: grid;
   gap: 10px;
   grid-template-rows: 1fr 5fr;
+  overflow: none;
+`;
+const SubWrapper = styled.div`
+  width: 100%;
+  height: 95vh;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     /* width: 10px;
@@ -19,12 +24,13 @@ const Wrapper = styled.div`
     display: none;
   }
 `;
-
 export default function Home() {
   return (
     <Wrapper>
-      <PostTweetForm />
-      <Timeline />
+      <SubWrapper>
+        <PostTweetForm />
+        <Timeline />
+      </SubWrapper>
     </Wrapper>
   );
 }

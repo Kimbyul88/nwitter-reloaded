@@ -52,9 +52,11 @@ const AttachFileButton = styled.label`
   height: 60px;
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
-  &:hover,
-  &:active {
+  &:hover {
     background: white;
+  }
+  &:active {
+    transform: scale(0.9);
   }
   transition: display 3s ease-in-out;
 `;
@@ -77,9 +79,11 @@ const SubmitBtn = styled.input`
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
   cursor: pointer;
-  &:hover,
-  &:active {
+  &:hover {
     background: white;
+  }
+  &:active {
+    transform: scale(0.9);
   }
 `;
 

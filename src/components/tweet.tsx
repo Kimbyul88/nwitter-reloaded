@@ -2,9 +2,13 @@ import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  getMetadata,
+  ref,
+} from "firebase/storage";
 import { ChangeEvent, useState } from "react";
-import { IoHeartSharp } from "react-icons/io5";
 import TweetFooter from "./tweet-footer";
 import CreatedAt from "./created-at";
 
@@ -17,23 +21,10 @@ const Wrapper = styled.div`
   padding: 20px;
   border-radius: 10px;
   position: relative;
+  width: 100%;
   &:hover {
     background: rgba(255, 255, 255, 0.4);
   }
-`;
-
-const SVGWrappper = styled.div`
-  z-index: -1;
-  position: absolute;
-  top: 18px;
-  right: 3.1%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background: ${({ color }) => color};
 `;
 
 const Column = styled.div`
@@ -45,7 +36,7 @@ const Column = styled.div`
 `;
 
 const Photo = styled.img`
-  width: 350px;
+  width: 100%;
   border-radius: 15px;
   margin-bottom: 20px;
 `;
@@ -116,7 +107,7 @@ const Buttons = styled.div`
   justify-content: center;
   gap: 5px;
   border-radius: 10px;
-  background: rgb(34, 139, 230);
+  background: rgba(0, 0, 0, 1);
   height: 40px;
   transform: translate(-30px, 0);
   z-index: 1;
@@ -226,18 +217,34 @@ const HeaderBox = styled.div`
   justify-content: space-between;
   align-items: end;
   background: none;
+`;
+const MoreIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   svg {
     cursor: pointer;
     opacity: 1;
     width: 28px;
     stroke: rgb(4, 24, 52);
+    position: relative;
     &:hover,
     &:active {
       stroke: #ffffff;
     }
   }
+  &:before {
+    content: "";
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+  }
+  &:hover:before {
+    background: rgba(74, 74, 74, 0.15);
+    backdrop-filter: blur(10px);
+  }
 `;
-
 export default function Tweet({
   username,
   photo,
@@ -251,7 +258,6 @@ export default function Tweet({
   const user = auth.currentUser;
   const [text, setText] = useState(tweet);
   const [isEditing, setIsEditing] = useState(false);
-  const [isMouseEnter, setMouseEnter] = useState(false);
   const [avatar, setAvatar] = useState(
     "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png"
   );
@@ -261,7 +267,7 @@ export default function Tweet({
       const downloadURL = await getDownloadURL(avatarRef);
       setAvatar(downloadURL);
     } catch (error) {
-      console.error(error);
+      return;
     }
   };
   getProfilePictureURL();
@@ -303,9 +309,7 @@ export default function Tweet({
   const onSVG = () => {
     setmore((current) => !current);
   };
-  const onMouse = () => {
-    setMouseEnter((current) => !current);
-  };
+
   const timeValue: number = createdAt;
   return (
     <Wrapper>
@@ -328,22 +332,18 @@ export default function Tweet({
             <CreatedAt time={timeValue} />
           </Username>
           {user?.uid === userId ? (
-            <svg
-              onMouseEnter={onMouse}
-              onMouseLeave={onMouse}
-              onClick={onSVG}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z"
-              />
-            </svg>
+            <MoreIcon>
+              <svg
+                onClick={onSVG}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+              </svg>
+            </MoreIcon>
           ) : null}
         </HeaderBox>
 
@@ -351,11 +351,6 @@ export default function Tweet({
         {photo ? <Photo src={photo} /> : null}
         <TweetFooter id={id} heartCount={heartCount} />
       </Column>
-      {isMouseEnter ? (
-        <SVGWrappper className="svgwrapper" color="rgb(20, 72, 117)" />
-      ) : (
-        <SVGWrappper className="svgwrapper" color="none" />
-      )}
 
       {user?.uid === userId && isMore ? (
         <Buttons>

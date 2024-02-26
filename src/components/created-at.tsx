@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
+const Time = styled.div`
+  color: rgb(127, 136, 151);
+  font-weight: 300;
+`;
 export default function CreatedAt({ time }: { time: number }) {
   const now = Date.now();
   const timeDate = new Date(time);
@@ -10,7 +13,6 @@ export default function CreatedAt({ time }: { time: number }) {
   const year = timeDate.getFullYear();
 
   const diff = (now - time) / 1000;
-  console.log(diff);
 
   const [timeState, setTimeState] = useState("");
   const [isOneday, setOneDay] = useState(false);
@@ -32,10 +34,6 @@ export default function CreatedAt({ time }: { time: number }) {
 
   useEffect(() => oneDayFunc(), []);
 
-  const Time = styled.div`
-    color: rgb(127, 136, 151);
-    font-weight: 300;
-  `;
   return (
     <Time>· {isOneday ? timeState : `${year}년 ${month}월 ${day}일`}</Time>
   );

@@ -48,7 +48,7 @@ export default function Timeline() {
       //실시간으로 쿼리를 가져온다.
       unsubscribe = await onSnapshot(tweetsQuery, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
-          console.log(change.type);
+          // console.log(change.type);
           return;
         });
         const tweets = snapshot.docs.map((doc) => {

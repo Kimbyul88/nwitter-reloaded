@@ -5,6 +5,7 @@ import { doc, updateDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 20px;
 `;
 
@@ -52,6 +53,7 @@ const Icon = styled.div`
   }
   svg:hover {
     stroke: ${({ color }) => color};
+    fill: ${({ color }) => color};
   }
   svg:hover g {
     stroke: ${({ color }) => color};
@@ -60,7 +62,9 @@ const Icon = styled.div`
   svg:hover g path {
     stroke: ${({ color }) => color};
   }
-
+  svg:active {
+    transform: scale(0.8);
+  }
   @keyframes heartFill {
     10% {
       transform: scale(0.8);
@@ -124,12 +128,9 @@ export default function TweetFooter({
             strokeWidth={1.4}
             stroke="currentColor"
             className="w-6 h-6"
+            width="16.5px"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z"
-            />
+            <path d="M12 20.25c4.97 0 9-3.694 9-8.25s-4.03-8.25-9-8.25S3 7.444 3 12c0 2.104.859 4.023 2.273 5.48.432.447.74 1.04.586 1.641a4.483 4.483 0 0 1-.923 1.785A5.969 5.969 0 0 0 6 21c1.282 0 2.47-.402 3.445-1.087.81.22 1.668.337 2.555.337Z" />
           </svg>
         </Icon>
         <Number>0</Number>
@@ -142,14 +143,7 @@ export default function TweetFooter({
             height="18"
             viewBox="0 0 21 21"
           >
-            <g
-              fill="none"
-              fill-rule="evenodd"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              strokeWidth="1"
-            >
+            <g fill="none" stroke="currentColor" strokeWidth="1">
               <path d="m13.5 13.5l3 3l3-3" />
               <path d="M9.5 4.5h3a4 4 0 0 1 4 4v8m-9-9l-3-3l-3 3" />
               <path d="M11.5 16.5h-3a4 4 0 0 1-4-4v-8" />
@@ -170,11 +164,7 @@ export default function TweetFooter({
               stroke="currentColor"
               className="fill"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
+              <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
           ) : (
             <svg
@@ -185,11 +175,7 @@ export default function TweetFooter({
               stroke="currentColor"
               className="nofill"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
+              <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
             </svg>
           )}
         </Icon>

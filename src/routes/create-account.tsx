@@ -1,6 +1,6 @@
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
-import { auth, storage } from "../firebase";
+import { auth, db } from "../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 import {
@@ -12,6 +12,7 @@ import {
   Form,
 } from "../components/auth-components";
 import GithubButton from "../components/github-btn";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function CreateAccount() {
   const navigate = useNavigate();
@@ -56,6 +57,12 @@ export default function CreateAccount() {
       await updateProfile(credentials.user, {
         displayName: name,
         photoURL:
+          "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png",
+      });
+      const user = auth.currentUser;
+      await setDoc(doc(db, "users", `${user?.uid}`), {
+        name: name,
+        profile:
           "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png",
       });
       navigate("/");
