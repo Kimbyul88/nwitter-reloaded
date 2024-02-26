@@ -2,19 +2,14 @@ import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  getMetadata,
-  ref,
-} from "firebase/storage";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { ChangeEvent, useState } from "react";
 import TweetFooter from "./tweet-footer";
 import CreatedAt from "./created-at";
 
 const Wrapper = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
   display: flex;
   gap: 10px;
@@ -23,7 +18,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   &:hover {
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.5);
   }
 `;
 

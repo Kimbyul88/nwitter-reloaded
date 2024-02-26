@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
   display: flex;
   flex-direction: column;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   border-radius: 10px;
   position: relative;
   width: 100%;
-  height: 50vh;
+  height: 40vh;
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
