@@ -62,7 +62,7 @@ const User = styled.div`
 `;
 
 const ID = styled.div`
-  color: rgba(120, 120, 120, 1);
+  color: rgba(120, 120, 120, 0.8);
   font-weight: 300;
   font-size: 14px;
 `;
@@ -85,6 +85,7 @@ const FollowBtn = styled.div`
   padding: 8px 10px;
   border-radius: 25px;
   font-size: 12px;
+  font-weight: 600;
   &.following {
     background: none;
     color: black;

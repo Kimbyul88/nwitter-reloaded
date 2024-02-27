@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 40vh;
+
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
@@ -40,7 +41,12 @@ const NameWrapper = styled.div`
 const NameBox = styled.div`
   padding: 5px 20px;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.25);
+  /* background: rgba(255, 255, 255, 0.25); */
+  background-image: linear-gradient(
+    0.46turn,
+    rgba(255, 255, 255, 0.35) 60%,
+    rgba(0, 0, 0, 0.15)
+  );
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -64,6 +70,7 @@ const NameBox = styled.div`
     background-color: black;
     color: white;
     opacity: 0;
+    font-weight: 600;
   }
   &:hover:after {
     opacity: 1;
