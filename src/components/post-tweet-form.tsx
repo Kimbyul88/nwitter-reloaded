@@ -52,12 +52,12 @@ const AttachFileButton = styled.label`
   align-items: center;
   width: 60px;
   height: 60px;
-  /* background: rgba(255, 255, 255, 0.35); */
-  background-image: linear-gradient(
+  background: rgba(255, 255, 255, 0.35);
+  /* background-image: linear-gradient(
     0.4turn,
     rgba(255, 255, 255, 0.35) 50%,
     rgba(0, 0, 0, 0.25)
-  );
+  ); */
   backdrop-filter: blur(10px);
 
   &:hover {
@@ -111,13 +111,13 @@ const SubmitBtn = styled.input`
   border: none;
   border-radius: 50%;
   font-size: 30px;
-  /* background: rgba(255, 255, 255, 0.35); */
+  background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     0.4turn,
     rgba(255, 255, 255, 0.35) 50%,
     rgba(0, 0, 0, 0.25)
-  );
+  ); */
   cursor: pointer;
   &:hover {
     background: rgba(255, 255, 255, 0.85);

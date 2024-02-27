@@ -1,11 +1,18 @@
 import styled from "styled-components";
 import { ITweet } from "./timeline";
 import { auth, db, storage } from "../firebase";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import TweetFooter from "./tweet-footer";
 import CreatedAt from "./created-at";
+import { IUser } from "./all-users";
 
 const Wrapper = styled.div`
   position: relative;
@@ -256,16 +263,28 @@ export default function Tweet({
   const [avatar, setAvatar] = useState(
     "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FK8JnM%2FbtsFgRbe10F%2FtoYMkkCD48wZFzIKIPAWu1%2Fimg.png"
   );
+  const [users, setUsers] = useState<IUser[]>([]);
   const getProfilePictureURL = async () => {
     try {
-      const avatarRef = ref(storage, `avatars/${userId}`);
-      const downloadURL = await getDownloadURL(avatarRef);
-      setAvatar(downloadURL);
+      const usersCollection = collection(db, "users");
+      const querySnapshot = await getDocs(usersCollection);
+      const usersData = querySnapshot.docs.map((doc) => doc.data() as IUser);
+      setUsers(usersData);
+      {
+        users.forEach((user) => {
+          if (username === user.name) {
+            setAvatar(user.profile);
+          }
+        });
+      }
+      console.log("getProfliw");
     } catch (error) {
       return;
     }
   };
-  getProfilePictureURL();
+  useEffect(() => {
+    getProfilePictureURL();
+  }, []);
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };

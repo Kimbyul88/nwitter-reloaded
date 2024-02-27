@@ -5,10 +5,12 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 import {
   collection,
+  doc,
   getDocs,
   limit,
   orderBy,
   query,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { ITweet } from "../components/timeline";
@@ -82,6 +84,9 @@ export default function Profile() {
       await updateProfile(user, {
         photoURL: avatarUrl,
       });
+      await updateDoc(doc(db, "users", user.uid), {
+        profile: avatarUrl,
+      });
     }
   };
   const fetchTweets = async () => {
@@ -93,7 +98,8 @@ export default function Profile() {
     );
     const snapshot = await getDocs(tweetQuery);
     const tweets = snapshot.docs.map((doc) => {
-      const { tweet, createdAt, userId, username, photo } = doc.data();
+      const { tweet, createdAt, userId, username, photo, heartCount } =
+        doc.data();
       return {
         tweet,
         createdAt,
@@ -101,6 +107,7 @@ export default function Profile() {
         username,
         photo,
         id: doc.id,
+        heartCount,
       };
     });
     setTweets(tweets);
@@ -122,11 +129,7 @@ export default function Profile() {
             stroke="currentColor"
             className="w-6 h-6"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"
-            />
+            <path d="M15.182 15.182a4.5 4.5 0 0 1-6.364 0M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z" />
           </svg>
         )}
       </AvatarUpload>

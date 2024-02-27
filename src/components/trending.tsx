@@ -182,7 +182,7 @@ export default function Trending() {
         </Trend>
         <Trend>
           <Column>
-            <Theme>대한민국에서 트렌드 중</Theme>
+            <Theme>IT · 실시간 트렌드</Theme>
             <Content>노마드코더 강의</Content>
             <Posts>17,693 posts</Posts>
           </Column>
