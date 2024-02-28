@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
+  font-family: "Noto Sans KR", sans-serif;
   background: rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(10px);
   display: flex;

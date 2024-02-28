@@ -107,7 +107,7 @@ const Column = styled.div`
   gap: 5px;
 `;
 const Theme = styled.div`
-  color: rgba(120, 120, 120, 0.8);
+  color: rgb(127, 136, 151);
   font-weight: 300;
   font-size: 14px;
 `;
@@ -116,7 +116,7 @@ const Content = styled.div`
   font-size: 20px;
 `;
 const Posts = styled.div`
-  color: rgba(120, 120, 120, 0.8);
+  color: rgb(127, 136, 151);
   font-weight: 300;
   font-size: 14px;
 `;

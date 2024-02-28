@@ -3,7 +3,7 @@ import PostTweetForm from "../components/post-tweet-form";
 import Timeline from "../components/timeline";
 
 const Wrapper = styled.div`
-  width: 30vw;
+  /* width: 30vw; */
   height: 95vh;
   display: grid;
   gap: 10px;

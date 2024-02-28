@@ -8,7 +8,7 @@ import {
   getDocs,
   updateDoc,
 } from "firebase/firestore";
-import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import { deleteObject, ref } from "firebase/storage";
 import { ChangeEvent, useEffect, useState } from "react";
 import TweetFooter from "./tweet-footer";
 import CreatedAt from "./created-at";
@@ -125,8 +125,8 @@ const EditBox = styled.div`
   height: 100%;
   border-radius: 15px;
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  padding: 20px;
+  grid-template-columns: 4fr 1fr;
+  padding: 10px;
 `;
 
 const Input = styled.textarea`
@@ -156,48 +156,47 @@ const Input = styled.textarea`
 const EditButtons = styled.div`
   width: 100%;
   display: flex;
-  gap: 5px;
-  justify-content: end;
+  flex-direction: column;
+  gap: 7px;
+  justify-content: center;
   align-items: center;
 `;
 
 const OkButton = styled.button`
-  height: 50px;
-  background-color: rgb(0, 0, 0);
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  font-size: 13px;
   border: none;
-  color: rgb(232, 236, 242);
-  padding: 10px 20px;
-  border-radius: 30px;
-  box-shadow: 1px 2px 0px black;
-  /* border-bottom: 2px solid black; */
+  background-color: rgb(0, 0, 0);
+  color: white;
+  font-weight: 600;
+  border-radius: 50%;
   &:hover {
-    background-color: rgb(255, 231, 91);
-    color: black;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
   }
   &:active {
-    box-shadow: none;
-    /* border: 2px solid rgba(0, 0, 0, 0); */
-    transform: translate(1px, 2px);
+    transform: scale(0.9);
   }
 `;
 
 const CancelButton = styled.button`
-  height: 50px;
-  background-color: rgb(164, 164, 164);
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+  font-size: 13px;
   border: none;
-  color: rgb(232, 236, 242);
-  padding: 10px 20px;
-  border-radius: 30px;
-  box-shadow: 1px 2px 0px black;
-
+  background-color: rgb(0, 0, 0);
+  color: white;
+  font-weight: 600;
+  border-radius: 50%;
   &:hover {
-    background-color: rgb(255, 231, 91);
-    color: black;
+    background-color: rgb(255, 255, 255);
+    color: #000000;
   }
   &:active {
-    box-shadow: none;
-    /* border: 2px solid rgba(0, 0, 0, 0); */
-    transform: translate(1px, 2px);
+    transform: scale(0.9);
   }
 `;
 
@@ -345,7 +344,7 @@ export default function Tweet({
             <ID>@{userId.slice(0, 8)}</ID>
             <CreatedAt time={timeValue} />
           </Username>
-          {user?.uid === userId ? (
+          {user?.uid === userId && !isEditing ? (
             <MoreIcon>
               <svg
                 onClick={onSVG}
@@ -363,7 +362,7 @@ export default function Tweet({
 
         <Payload>{tweet}</Payload>
         {photo ? <Photo src={photo} /> : null}
-        <TweetFooter id={id} heartCount={heartCount} />
+        {isEditing ? null : <TweetFooter id={id} heartCount={heartCount} />}
       </Column>
 
       {user?.uid === userId && isMore ? (

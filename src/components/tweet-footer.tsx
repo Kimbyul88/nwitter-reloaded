@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { auth, db } from "../firebase";
+import { db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 const Wrapper = styled.div`
@@ -99,9 +99,9 @@ export default function TweetFooter({
 }) {
   let HEART = heartCount;
   const [isClicked, setClicked] = useState(false);
-  const user = auth.currentUser;
+  // const user = auth.currentUser;
 
-  const onHeart = async (e: React.MouseEvent<HTMLDivElement>) => {
+  const onHeart = async () => {
     setClicked((c) => !c);
     if (isClicked) {
       HEART = HEART - 1;

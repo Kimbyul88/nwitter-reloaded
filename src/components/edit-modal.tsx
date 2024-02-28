@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { ChangeEvent, useState } from "react";
-import Tweet from "./tweet";
 
 const EditBox = styled.div`
   width: 30vw;

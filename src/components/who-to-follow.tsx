@@ -62,7 +62,7 @@ const User = styled.div`
 `;
 
 const ID = styled.div`
-  color: rgba(120, 120, 120, 0.8);
+  color: rgb(127, 136, 151);
   font-weight: 300;
   font-size: 14px;
 `;
