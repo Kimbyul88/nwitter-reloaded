@@ -4,6 +4,8 @@ import { auth } from "../firebase";
 import AllUsers from "./all-users";
 import Trending from "./trending";
 import WhoToFollow from "./who-to-follow";
+import { useEffect, useState } from "react";
+// import { useState } from "react";
 
 const Left = styled.div`
   display: grid;
@@ -12,11 +14,11 @@ const Left = styled.div`
 `;
 
 const LogoBox = styled.div`
-  /* background-color: blue; */
   display: flex;
   justify-content: center;
   align-items: start;
   padding-top: 25px;
+  position: relative;
 `;
 
 const Logo = styled.div`
@@ -41,7 +43,6 @@ const Logo = styled.div`
     cursor: pointer;
     background: rgba(255, 255, 255, 0.55);
     animation: 3s logo-scale ease-in-out;
-    /* animation-play-state: paused; */
   }
   &:after {
     content: "";
@@ -49,7 +50,6 @@ const Logo = styled.div`
     width: 200%;
     height: 45%;
     background-color: rgba(255, 255, 255, 0.55);
-    /* border-radius: 50%; */
     transform: translate(-40%, 50%) rotateZ(45deg);
     transition: all 0.7s ease-in-out;
   }
@@ -197,7 +197,53 @@ const WrapperInRight = styled.div`
   gap: 5px;
 `;
 const SearchBox = styled.div``;
-
+const LeftBtn = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: #cbcbcb;
+  position: absolute;
+  border-radius: 50%;
+  left: 15%;
+  top: 40%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+const RightBtn = styled.div`
+  width: 30px;
+  height: 30px;
+  background-color: #cbcbcb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 50%;
+  right: 10%;
+  top: 40%;
+  color: white;
+  cursor: pointer;
+  &:active {
+    transform: scale(0.9);
+  }
+`;
+const LogoSilder = styled.div`
+  display: flex;
+  align-items: center;
+  /* background-color: green; */
+`;
+const Desc = styled.div`
+  position: absolute;
+  top: 90%;
+  left: 22%;
+  font-weight: 200;
+  /* color: red; */
+  font-style: italic;
+`;
 export default function Layout() {
   const user = auth.currentUser;
   const avatar = user?.photoURL;
@@ -215,19 +261,69 @@ export default function Layout() {
   const goProfile = () => {
     navigate("/profile");
   };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [logoArr, setlogoArr] = useState<HTMLImageElement[]>([]);
+  const logo = document.querySelector<HTMLDivElement>(".logo");
+  const logoimg0 = document.createElement("img");
+  const logoimg1 = document.createElement("img");
+  const logoimg2 = document.createElement("img");
 
+  logoimg0.src = "https://img.icons8.com/3d-fluency/94/exploding-head-1.png";
+  logoimg1.src =
+    "https://img.icons8.com/3d-fluency/94/smiling-face-with-heart-eyes-2.png";
+  logoimg2.src = "https://img.icons8.com/3d-fluency/94/fearful-face-icon.png";
+
+  useEffect(() => {
+    logo?.appendChild(logoimg0);
+    logo?.appendChild(logoimg1);
+    logo?.appendChild(logoimg2);
+    setlogoArr([logoimg0, logoimg1, logoimg2]);
+
+    return () => {
+      logo?.removeChild(logoimg0);
+      logo?.removeChild(logoimg1);
+      logo?.removeChild(logoimg2);
+    };
+  }, [logo]);
+
+  const LeftClick = () => {
+    if (currentIndex >= 0) {
+      setCurrentIndex((c) => c - 1);
+    }
+  };
+
+  const RightClick = () => {
+    if (currentIndex < logoArr.length - 2) {
+      setCurrentIndex((c) => c + 1);
+    }
+  };
+  useEffect(() => {
+    if (logo) {
+      const offset = -95 * currentIndex;
+      logo.style.transform = `translateX(${offset}px)`;
+      logoArr.forEach((logo, index) => {
+        if (index == currentIndex + 1) {
+          logo.style.transform = "scale(1.3)";
+          logo.style.transition = "transform 1s ease";
+          logo.style.opacity = "1.0";
+        } else {
+          logo.style.transform = "scale(0.8)";
+          logo.style.transition = "transform 1s ease";
+          logo.style.opacity = "0.2";
+        }
+      });
+    }
+  }, [currentIndex]);
   return (
     <Wrapper>
       <Left>
         <LogoBox onClick={goHome}>
           <Logo>
-            <img
-              width="100"
-              height="100"
-              src="https://img.icons8.com/3d-fluency/94/flushed.png"
-              alt="flushed"
-            />
+            <LogoSilder className="logo"></LogoSilder>
           </Logo>
+          <LeftBtn onClick={LeftClick}>◀</LeftBtn>
+          <RightBtn onClick={RightClick}>▶</RightBtn>
+          <Desc>[오늘의 기분을 골라보세요!]</Desc>
         </LogoBox>
         <MenuWrapper>
           <Menu>

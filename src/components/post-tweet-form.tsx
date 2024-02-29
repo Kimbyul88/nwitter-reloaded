@@ -141,7 +141,7 @@ export default function PostTweetForm() {
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
     if (files && files.length === 1) {
-      if (files[0].size <= 100000) {
+      if (files[0].size <= 1024 * 1024) {
         setFile(files[0]);
         setBackgroundImage(URL.createObjectURL(files[0]));
       } else {

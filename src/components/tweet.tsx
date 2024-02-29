@@ -284,6 +284,15 @@ export default function Tweet({
   useEffect(() => {
     getProfilePictureURL();
   }, []);
+
+  useEffect(() => {
+    users.forEach((user) => {
+      if (username === user.name) {
+        setAvatar(user.profile);
+      }
+    });
+  }, [users]);
+
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
@@ -324,6 +333,7 @@ export default function Tweet({
   };
 
   const timeValue: number = createdAt;
+  // console.log(avatar);
   return (
     <Wrapper>
       {user?.uid === userId && isEditing ? (

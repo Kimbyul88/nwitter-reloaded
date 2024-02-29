@@ -97,24 +97,19 @@ export default function TweetFooter({
   id: string;
   heartCount: number;
 }) {
-  let HEART = heartCount;
+  const [HEART, setHeart] = useState(heartCount);
   const [isClicked, setClicked] = useState(false);
-  // const user = auth.currentUser;
 
   const onHeart = async () => {
     setClicked((c) => !c);
-    if (isClicked) {
-      HEART = HEART - 1;
-    } else {
-      HEART = HEART + 1;
-    }
+    const updatedHeart = isClicked ? HEART - 1 : HEART + 1;
+    setHeart(updatedHeart);
     try {
       await updateDoc(doc(db, `tweets/${id}`), {
-        heartCount: HEART,
+        heartCount: updatedHeart,
       });
     } catch (e) {
-      console.log(e);
-    } finally {
+      console.error(e);
     }
   };
   return (
